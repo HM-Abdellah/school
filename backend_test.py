@@ -3,8 +3,8 @@ import unittest
 import json
 from datetime import datetime, timedelta
 
-class AttendanceSystemAPITest(unittest.TestCase):
-    def setUp(self):
+class AttendanceSystemAPITest:
+    def __init__(self):
         # Get the backend URL from the frontend .env file
         self.base_url = "https://ccac1a2d-9c60-43e5-8cd2-fae9614e8d81.preview.emergentagent.com"
         self.token = None
