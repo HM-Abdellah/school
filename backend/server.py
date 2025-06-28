@@ -269,11 +269,17 @@ async def get_class_attendance(
     if not class_doc:
         raise HTTPException(status_code=404, detail="Class not found or access denied")
     
-    attendance_records = await attendance_collection.find({
+    cursor = attendance_collection.find({
         "class_id": class_id,
         "date": date,
         "session": session
-    }).to_list(100)
+    })
+    attendance_records = await cursor.to_list(100)
+    
+    # Convert ObjectId to string
+    for record in attendance_records:
+        if "_id" in record:
+            record["_id"] = str(record["_id"])
     
     return attendance_records
 
