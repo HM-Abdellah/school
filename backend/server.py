@@ -10,6 +10,15 @@ from datetime import datetime, time, date
 import uuid
 import jwt
 from dotenv import load_dotenv
+from bson import ObjectId
+import json
+
+# Custom JSON encoder to handle ObjectId
+class JSONEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, ObjectId):
+            return str(o)
+        return json.JSONEncoder.default(self, o)
 
 load_dotenv()
 
