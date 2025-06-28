@@ -329,6 +329,10 @@ async def get_class_details(class_id: str, teacher_id: str = Depends(verify_toke
     if not class_doc:
         raise HTTPException(status_code=404, detail="Class not found or access denied")
     
+    # Convert ObjectId to string
+    if "_id" in class_doc:
+        class_doc["_id"] = str(class_doc["_id"])
+    
     return class_doc
 
 if __name__ == "__main__":
