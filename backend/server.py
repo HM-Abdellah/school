@@ -247,7 +247,14 @@ async def get_class_students(class_id: str, teacher_id: str = Depends(verify_tok
     if not class_doc:
         raise HTTPException(status_code=404, detail="Class not found or access denied")
     
-    students = await students_collection.find({"class_id": class_id}).to_list(100)
+    cursor = students_collection.find({"class_id": class_id})
+    students = await cursor.to_list(100)
+    
+    # Convert ObjectId to string
+    for student in students:
+        if "_id" in student:
+            student["_id"] = str(student["_id"])
+    
     return students
 
 @app.get("/api/classes/{class_id}/attendance")
