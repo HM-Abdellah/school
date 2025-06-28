@@ -230,7 +230,14 @@ async def get_teacher_profile(teacher_id: str = Depends(verify_token)):
 
 @app.get("/api/classes")
 async def get_teacher_classes(teacher_id: str = Depends(verify_token)):
-    classes = await classes_collection.find({"teacher_id": teacher_id}).to_list(100)
+    cursor = classes_collection.find({"teacher_id": teacher_id})
+    classes = await cursor.to_list(100)
+    
+    # Convert ObjectId to string
+    for cls in classes:
+        if "_id" in cls:
+            cls["_id"] = str(cls["_id"])
+    
     return classes
 
 @app.get("/api/classes/{class_id}/students")
